@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+
+  fingerprint String @unique
+
+  votes Vote[]
+  comments Comment[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Vertex {
+  id String @id @default(cuid())
+
+  longitude Float
+  latitude Float
+
+  edges_a Edge[] @relation("edges_a_relation")
+  edges_b Edge[] @relation("edges_b_relation")
+
+  @@unique([longitude, latitude])
+}
+
+model Edge {
+  id String @id @default(cuid())
+
+  vertex_a_id String
+  vertex_a Vertex @relation("edges_a_relation", fields: [vertex_a_id], references: [id])
+
+  vertex_b_id String
+  vertex_b Vertex @relation("edges_b_relation", fields: [vertex_b_id], references: [id])
+
+  areas Area[]
+  routes Route[]
+
+  @@unique([vertex_a_id, vertex_b_id])
+}
+
+model Vote {
+  id String @id @default(cuid())
+
+  thumbs_up Boolean
+
+  type VoteType
+
+  fare_id String?
+  fare Fare? @relation(fields: [fare_id], references: [id])
+
+  area_id String?
+  area Area? @relation(fields: [area_id], references: [id])
+
+  route_id String?
+  route Route? @relation(fields: [route_id], references: [id])
+
+  user_id String
+  user  User @relation(fields: [user_id], references: [id])
+}
+
+enum VoteType {
+  FARE_VOTE
+  AREA_RATE
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  content String
+
+  fare_id String?
+  fare Fare? @relation(fields: [fare_id], references: [id])
+
+  area_id String?
+  area Area? @relation(fields: [area_id], references: [id])
+
+  route_id String?
+  route Route? @relation(fields: [route_id], references: [id])
+
+  user_id String
+  user  User @relation(fields: [user_id], references: [id])
+}
+
+model Fare {
+  id String @id @default(cuid())
+
+  votes Vote[]
+  comments Comment[]
+
+  area_id String
+  area Area @relation(fields: [area_id], references: [id])
+
+  route_id String?
+  route Route? @relation(fields: [route_id], references: [id])
+}
+
+model Area {
+  id String @id @default(cuid())
+
+  votes Vote[]
+  commens Comment[]
+
+  edges Edge[]
+  fares Fare[]
+}
+
+model Route {
+  id String @id @default(cuid())
+
+  votes Vote[]
+  commens Comment[]
+
+  edges Edge[]
+  fares Fare[]
+}
