@@ -17,6 +17,9 @@ model User {
 
   votes Vote[]
   comments Comment[]
+  submitted_fares Fare[]
+  submitted_areas Area[]
+  submitted_routes Route[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -30,6 +33,9 @@ model Vertex {
 
   edges_a Edge[] @relation("edges_a_relation")
   edges_b Edge[] @relation("edges_b_relation")
+
+  source_fares Fare[] @relation("source_fare_relation")
+  destination_fares Fare[] @relation("destination_fare_relation")
 
   @@unique([longitude, latitude])
 }
@@ -71,7 +77,8 @@ model Vote {
 
 enum VoteType {
   FARE_VOTE
-  AREA_RATE
+  AREA_VOTE
+  ROUTE_VOTE
 }
 
 model Comment {
@@ -95,11 +102,25 @@ model Comment {
 model Fare {
   id String @id @default(cuid())
 
+  min_amount Float
+  max_amount Float?
+
+  description String?
+
+  source_id String
+  source Vertex @relation("source_fare_relation", fields: [source_id], references: [id])
+
+  destination_id String
+  destination Vertex @relation("destination_fare_relation", fields: [destination_id], references: [id])
+
   votes Vote[]
   comments Comment[]
 
-  area_id String
-  area Area @relation(fields: [area_id], references: [id])
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+
+  area_id String?
+  area Area? @relation(fields: [area_id], references: [id])
 
   route_id String?
   route Route? @relation(fields: [route_id], references: [id])
@@ -108,18 +129,42 @@ model Fare {
 model Area {
   id String @id @default(cuid())
 
+  name String
+  description String?
+
+  reviewed Boolean @default(false)
+
+  type AreaType
+
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+
   votes Vote[]
-  commens Comment[]
+  comments Comment[]
 
   edges Edge[]
   fares Fare[]
 }
 
+enum AreaType {
+  TRICYCLE
+  TRISIKAD
+  HABAL_HABAL
+}
+
 model Route {
   id String @id @default(cuid())
 
+  name String
+  description String?
+
+  reviewed Boolean @default(false)
+
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+
   votes Vote[]
-  commens Comment[]
+  comments Comment[]
 
   edges Edge[]
   fares Fare[]

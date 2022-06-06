@@ -5,13 +5,16 @@ import { theme } from 'styles/theme'
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import { DrawProvider } from 'hooks/useDraw';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <AuthProvider>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <DrawProvider>
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </DrawProvider>
     </AuthProvider>
   )
 }

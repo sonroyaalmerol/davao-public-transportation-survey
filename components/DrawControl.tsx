@@ -2,6 +2,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { useControl } from 'react-map-gl';
 
 import type { MapRef, ControlPosition } from 'react-map-gl';
+import React from 'react';
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition;
@@ -10,7 +11,6 @@ type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   onUpdate?: (evt: {features: object[]; action: string}) => void;
   onDelete?: (evt: {features: object[]}) => void;
 };
-
 const DrawControl: React.FC<DrawControlProps> = (props) => {
   const onCreate = (e: any) => {
     if ('onCreate' in props && props.onCreate) {
