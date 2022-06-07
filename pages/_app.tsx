@@ -5,16 +5,16 @@ import { theme } from 'styles/theme'
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
-import { DrawProvider } from 'hooks/useDraw';
+import { ModeProvider } from 'hooks/useMode';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <AuthProvider>
-      <DrawProvider>
+      <ModeProvider>
         <ChakraProvider theme={theme}>
           <Component {...pageProps} />
         </ChakraProvider>
-      </DrawProvider>
+      </ModeProvider>
     </AuthProvider>
   )
 }

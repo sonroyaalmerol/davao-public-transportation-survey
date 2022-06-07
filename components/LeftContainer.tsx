@@ -9,8 +9,8 @@ const LeftContainer: React.FC<LeftContainerProps> = (props) => {
   return (
     <VStack
       position="absolute"
-      top={10}
-      left={10}
+      top={5}
+      left={5}
       maxW="30vw"
       maxH="90vh"
       overflowY="scroll"

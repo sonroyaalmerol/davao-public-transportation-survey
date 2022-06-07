@@ -9,8 +9,8 @@ const RightContainer: React.FC<RightContainerProps> = (props) => {
   return (
     <VStack
       position="absolute"
-      top={10}
-      right={10}
+      top={5}
+      right={5}
       maxW="30vw"
       maxH="90vh"
       overflowY="scroll"

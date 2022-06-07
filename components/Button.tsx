@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       backgroundColor="rgba(17, 25, 40, 0.75)"
       border="1px solid rgba(255, 255, 255, 0.125)"
       color="white"
-      padding="1.5rem"
+      padding="1rem"
       _hover={{
         backgroundColor: "rgba(17, 25, 40, 0)",
         
